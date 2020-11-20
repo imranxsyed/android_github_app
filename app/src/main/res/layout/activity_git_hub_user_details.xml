@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GitHubUserDetails"
+    android:visibility="invisible"
+    android:id="@+id/activity_git_hub_user_details_root">
+
+    <TextView
+        android:id="@+id/activity_git_hub_user_details_user_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        tools:text="Imran Syed"
+        android:textSize="35sp"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/activity_git_hub_user_details_iv_user_image"
+        tools:src="@tools:sample/avatars"
+        app:layout_constraintTop_toBottomOf="@+id/activity_git_hub_user_details_user_name"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/activity_git_hub_user_details_linear_layout"
+        app:layout_constraintStart_toEndOf="@+id/activity_git_hub_user_details_iv_user_image"
+        app:layout_constraintTop_toBottomOf="@+id/activity_git_hub_user_details_user_name"
+        android:orientation="vertical"
+        android:layout_margin="8dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_git_hub_user_details_user_email"
+            android:text="@string/email"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_git_hub_user_details_user_location"
+            android:text="@string/location"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_git_hub_user_details_user_join_date"
+            android:text="@string/join_date"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_git_hub_user_details_user_followers"
+            android:text="@string/_0_followers"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/activity_git_hub_user_details_user_following"
+            android:text="@string/following"/>
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:id="@+id/activity_git_hub_user_details_user_bio"
+        app:layout_constraintTop_toBottomOf="@+id/activity_git_hub_user_details_linear_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="This is my BiographyThis is my BiographyThis is my BiographyThis is my BiographyvThis is my BiographyThis is my BiographyThis is my BiographyThis is my BiographyThis is my BiographyThis is my Biography"
+        android:textAlignment="center"
+        android:lineSpacingExtra="2dp"
+        android:textColor="@color/black"
+        android:textStyle="bold|italic"
+        android:textSize="15sp"
+        android:layout_marginTop="16dp"/>
+
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="Search Repos"
+        android:id="@+id/activity_git_hub_user_details_search_bar"
+        app:layout_constraintTop_toBottomOf="@id/activity_git_hub_user_details_user_bio"
+        app:layout_constraintStart_toStartOf="parent"
+        android:clickable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        android:layout_marginTop="8dp"/>
+
+    <include layout="@layout/my_custom_recyclerview"
+        app:layout_constraintTop_toBottomOf="@id/activity_git_hub_user_details_search_bar"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/activity_git_hub_user_details_rv_repos"
+        android:visibility="invisible"
+        android:layout_marginTop="2dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textSize="35sp"
+        android:text="NO REPOS FOUND!"
+        android:textStyle="bold"
+        android:textColor="#AAFF0000"
+        app:layout_constraintTop_toBottomOf="@id/activity_git_hub_user_details_search_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/activity_git_hub_user_details_repo_msg"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

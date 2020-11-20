@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Githubber</string>
+    <string name="repo">REPO#:</string>
+    <string name="email">Email: {email}</string>
+    <string name="location">Location: {location}</string>
+    <string name="join_date">Join Date: {date}</string>
+    <string name="_0_followers">0 Followers</string>
+    <string name="following">Following: 0</string>
+</resources>
