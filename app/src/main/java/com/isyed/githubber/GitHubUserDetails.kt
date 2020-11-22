@@ -6,61 +6,62 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.isyed.githubber.presenter.GithubUserDetailsPresenter
+import com.isyed.githubber.view.IGithubUserDetails
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_git_hub_user_details.*
 import okhttp3.Credentials
 import retrofit2.Call
 import retrofit2.Response
 
-class GitHubUserDetails : AppCompatActivity() {
+class GitHubUserDetails : AppCompatActivity() , IGithubUserDetails{
+    var presenter : GithubUserDetailsPresenter? = null
     lateinit var myUser : GithubUser
     lateinit var reposAdapter: GithubAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
+        onBind()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_git_hub_user_details)
 
         getUserInfo()
     }
-    private fun getUserInfo(){
+
+    override fun onBind() {
+        presenter = GithubUserDetailsPresenter(this)
+    }
+
+    override  fun getUserInfo(){
         if (!MyApplication.isNetworkAvailable()){
             Toast.makeText(this, "Internet Not Available", Toast.LENGTH_LONG).show()
             return
         }
 
          myUser = intent?.getParcelableExtra<GithubUser>(MainActivity.EX_GITHUB_USER)!!
-
-        MyApplication.githubApi.getSpecificUserByLogin(myUser.login).enqueue(
-            object : retrofit2.Callback<GithubUser>{
-                override fun onFailure(call: Call<GithubUser>, t: Throwable) {
-                    println(t)
-                }
-
-                override fun onResponse(call: Call<GithubUser>, response: Response<GithubUser>) {
-                    if(response.isSuccessful){
-                        response.body()?.let {
-                            myUser = it
-                            myUser.userRepos = mutableListOf()
-                            populateData()
-                        }
-                    }
-                }
-
-            }
-        )
+         presenter?.getUserInfo(myUser.login)
     }
 
-    private fun populateData(){
+    override fun postGetUserInfo(githubUser: GithubUser) {
+        populateData(githubUser)
+    }
 
-        activity_git_hub_user_details_user_name.text =  myUser.name
-        activity_git_hub_user_details_user_email.text = MyApplication.myAppContext.getString(R.string.email).replace("{email}",myUser.email ?: "No Email Found")
-        activity_git_hub_user_details_user_location.text = MyApplication.myAppContext.getString(R.string.location).replace("{location}", myUser.location ?: "No Location Associated")
-        activity_git_hub_user_details_user_join_date.text =  MyApplication.myAppContext.getString(R.string.join_date).replace("{date}", myUser.created_at ?: "No Join Data Found")
+
+
+    override fun postGetUserRepos(repos: List<GithubRepo>) {
+
+    }
+
+    private fun populateData(githubUser : GithubUser){
+
+        activity_git_hub_user_details_user_name.text =  githubUser.name
+        activity_git_hub_user_details_user_email.text = MyApplication.myAppContext.getString(R.string.email).replace("{email}",githubUser.email ?: "No Email Found")
+        activity_git_hub_user_details_user_location.text = MyApplication.myAppContext.getString(R.string.location).replace("{location}", githubUser.location ?: "No Location Associated")
+        activity_git_hub_user_details_user_join_date.text =  MyApplication.myAppContext.getString(R.string.join_date).replace("{date}", githubUser.created_at ?: "No Join Data Found")
         activity_git_hub_user_details_user_followers.text =
-            MyApplication.myAppContext.getString(R.string._0_followers).replace("0", myUser.followers.toString())
+            MyApplication.myAppContext.getString(R.string._0_followers).replace("0", githubUser.followers.toString())
         activity_git_hub_user_details_user_following.text =
-            MyApplication.myAppContext.getString(R.string.following).replace("0",myUser.following.toString())
-        activity_git_hub_user_details_user_bio.text = myUser.bio ?: "No Bio Available"
-        Picasso.get().load(Uri.parse(myUser.avatar_url)).into(activity_git_hub_user_details_iv_user_image)
+            MyApplication.myAppContext.getString(R.string.following).replace("0",githubUser.following.toString())
+        activity_git_hub_user_details_user_bio.text = githubUser.bio ?: "No Bio Available"
+        Picasso.get().load(Uri.parse(githubUser.avatar_url)).into(activity_git_hub_user_details_iv_user_image)
 
         activity_git_hub_user_details_root.visibility = View.VISIBLE
 
@@ -72,23 +73,8 @@ class GitHubUserDetails : AppCompatActivity() {
 //
 //        }
     }
-    private fun getUserRepos(){
-        MyApplication.githubApi.getUserRepos(
-            Credentials.basic("imranxsyed", "f5f1fb478578a6be5122cebc155a119a902f4c51"),
-            myUser.login).enqueue(
-            object : retrofit2.Callback<List<GithubRepo>> {
-                override fun onFailure(call: Call<List<GithubRepo>>, t: Throwable) { println(t)}
-                override fun onResponse(call: Call<List<GithubRepo>>, response: Response<List<GithubRepo>>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { repos ->
-                            myUser.userRepos = repos
-                            //setting the repos
-                            //TODO add a recyclerview for repositories
-                            (activity_git_hub_user_details_rv_repos as RecyclerView)
-
-                        }
-                    }
-                }
-            })
+    override  fun getUserRepos(){
+      presenter?.getUserInfo(myUser.login)
     }
+
 }

@@ -6,4 +6,5 @@
     <string name="join_date">Join Date: {date}</string>
     <string name="_0_followers">0 Followers</string>
     <string name="following">Following: 0</string>
+    <string name="no_repos_found">NO REPOS FOUND!</string>
 </resources>
